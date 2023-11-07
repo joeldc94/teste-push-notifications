@@ -27,10 +27,12 @@ router.post('/register', (req, res) => {
 router.post('/send', async (req, res) => {
     const { subscription } = req.body;
 
+    webPush.sendNotification(subscription, 'Notificação vinda do backend')
+/* 
     setTimeout(()=>{
         webPush.sendNotification(subscription, 'Notificação vinda do backend')
     }, 5000)
-
+ */
     return res.status(201).send()
 })
 
