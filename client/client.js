@@ -13,6 +13,7 @@ async function send() {
     let subscription = await serviceWorker.pushManager.getSubscription()
 
     if (!subscription) {
+      console.log("Subscription não encontrada. Realizar nova subscription:")
       const dataPK = await fetch('/notification/public_key') // pega a publi key do backend
       const { publicKey } = await dataPK.json()
       console.log(publicKey)
@@ -21,17 +22,18 @@ async function send() {
         applicationServerKey: publicKey,
         userVisibleOnly: true,
       });
+
+      console.log("Registra subscription")
+      await fetch('/notification/register', {
+        method: 'POST',
+        body: JSON.stringify({ subscription }),
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
     console.log('Subscription:', subscription)
 
-    await fetch('/notification/register', {
-      method: 'POST',
-      body: JSON.stringify({ subscription }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-
-
+    console.log('Envia o pedido de notificação')
     await fetch('/notification/send', {
       method: 'POST',
       body: JSON.stringify({ subscription }),
@@ -41,7 +43,9 @@ async function send() {
 }
 
 
+
 function windNotification() {
+  console.log("Notificação do frontend")
   window.Notification.requestPermission(permission => {
     if (permission === 'granted') {
       new window.Notification('Previsio Testes Notif', {
