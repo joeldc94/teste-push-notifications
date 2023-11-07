@@ -13,7 +13,7 @@ async function send() {
     let subscription = await serviceWorker.pushManager.getSubscription()
 
     if (!subscription) {
-      const dataPK = await fetch('http://localhost:5000/notification/public_key') // pega a publi key do backend
+      const dataPK = await fetch('/notification/public_key') // pega a publi key do backend
       const { publicKey } = await dataPK.json()
       console.log(publicKey)
 
