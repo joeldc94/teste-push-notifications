@@ -1,7 +1,7 @@
-self.addEventListener('push', function(event){
+self.addEventListener('push', function (event) {
     const body = event.data?.text() ?? ''
     event.waitUntil(
-        self.registration.showNotification('Teste Previsio',{
+        self.registration.showNotification('Teste Previsio', {
             body,
         })
     )
